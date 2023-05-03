@@ -5,7 +5,7 @@ use tracing::warn;
 use volo::{
     context::Context,
     discovery::Discover,
-    loadbalance::{error::LoadBalanceError, LoadBalance, MkLbLayer},
+    loadbalance::{error::LoadBalanceError, LoadBalance, MkLbLayer, RequestCode},
     Layer, Unwrap,
 };
 
@@ -102,11 +102,12 @@ where
         );
         async move {
             let callee = cx.rpc_info().callee().volo_unwrap();
+            let extensions = cx.extensions();
 
             let mut picker = match &callee.address {
                 None => self
                     .load_balance
-                    .get_picker(callee, &self.discover)
+                    .get_picker(extensions.get::<RequestCode>(), callee, &self.discover)
                     .await
                     .map_err(|err| err.into())?,
                 _ => {

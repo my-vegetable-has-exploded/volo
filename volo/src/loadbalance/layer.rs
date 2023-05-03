@@ -4,7 +4,12 @@ use motore::Service;
 use tracing::warn;
 
 use super::error::{LoadBalanceError, Retryable};
-use crate::{context::Context, discovery::Discover, loadbalance::LoadBalance, Layer, Unwrap};
+use crate::{
+    context::Context,
+    discovery::Discover,
+    loadbalance::{LoadBalance, RequestCode},
+    Layer, Unwrap,
+};
 
 #[derive(Clone)]
 pub struct LoadBalanceService<D, LB, S> {
@@ -72,11 +77,12 @@ where
         );
         async move {
             let callee = cx.rpc_info().callee().volo_unwrap();
+            let extensions = cx.extensions();
 
             let picker = match &callee.address {
                 None => self
                     .load_balance
-                    .get_picker(callee, &self.discover)
+                    .get_picker(extensions.get::<RequestCode>(), callee, &self.discover)
                     .await
                     .map_err(|err| err.into())?,
                 _ => {

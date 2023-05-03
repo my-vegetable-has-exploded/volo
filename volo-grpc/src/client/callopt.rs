@@ -34,7 +34,11 @@
 //! ```
 
 use metainfo::TypeMap;
-use volo::net::Address;
+use volo::{
+    context::{Context, Extensions},
+    loadbalance::RequestCode,
+    net::Address,
+};
 
 use crate::context::Config;
 
@@ -49,12 +53,19 @@ pub struct CallOpt {
     pub config: Config,
     /// Sets the caller tags for the call.
     pub caller_tags: TypeMap,
+    /// User-defined informations
+    pub extensions: Extensions,
 }
 
 impl CallOpt {
     /// Creates a new [`CallOpt`].
     pub fn new() -> Self {
         Default::default()
+    }
+
+    pub fn set_request_code(&mut self, code: u64) -> &mut Self {
+        self.extensions.insert(RequestCode(code));
+        self
     }
 }
 
@@ -70,6 +81,7 @@ impl volo::client::Apply<crate::context::ClientContext> for CallOpt {
         if let Some(addr) = self.address {
             callee.set_address(addr);
         }
+        cx.extensions_mut().extend(self.extensions.0);
         cx.rpc_info.config_mut().unwrap().merge(self.config);
         Ok(())
     }

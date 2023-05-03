@@ -1,3 +1,4 @@
+pub mod consistent_hash;
 pub mod error;
 mod layer;
 pub mod random;
@@ -10,6 +11,8 @@ use crate::{
     discovery::{Change, Discover},
     net::Address,
 };
+
+pub struct RequestCode(pub u64);
 
 /// [`LoadBalance`] promise the feature of the load balance policy.
 pub trait LoadBalance<D>: Send + Sync + 'static
@@ -30,6 +33,7 @@ where
     /// service discovery.
     fn get_picker<'future>(
         &'future self,
+        request_key: Option<&'future RequestCode>,
         endpoint: &'future Endpoint,
         discover: &'future D,
     ) -> Self::GetFut<'future>

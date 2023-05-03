@@ -4,7 +4,7 @@ use std::{future::Future, hash::Hash, sync::Arc};
 use dashmap::{mapref::entry::Entry, DashMap};
 use rand::Rng;
 
-use super::{error::LoadBalanceError, LoadBalance};
+use super::{error::LoadBalanceError, LoadBalance, RequestCode};
 use crate::{
     context::Endpoint,
     discovery::{Change, Discover, Instance},
@@ -124,6 +124,7 @@ where
 
     fn get_picker<'future>(
         &'future self,
+        _request_key: Option<&'future RequestCode>,
         endpoint: &'future Endpoint,
         discover: &'future D,
     ) -> Self::GetFut<'future>
@@ -178,7 +179,7 @@ mod tests {
             "127.0.0.2:9000".parse().unwrap(),
         ]);
         let lb = WeightedRandomBalance::with_discover(&discover);
-        let picker = lb.get_picker(&empty, &discover).await.unwrap();
+        let picker = lb.get_picker(None, &empty, &discover).await.unwrap();
         let all = picker.collect::<Vec<_>>();
         assert_eq!(all.len(), 2);
         assert_ne!(all[0], all[1]);

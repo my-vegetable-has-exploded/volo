@@ -4,7 +4,7 @@ use chrono::{DateTime, Local};
 use paste::paste;
 use pilota::thrift::TMessageIdentifier;
 use volo::{
-    context::{Role, RpcCx, RpcInfo},
+    context::{Context, Role, RpcCx, RpcInfo},
     newtype_impl_context,
 };
 
@@ -440,6 +440,7 @@ impl ::volo::client::Apply<ClientContext> for CallOpt {
         }
         let caller = cx.rpc_info.caller.as_mut().unwrap();
         caller.tags.extend(self.caller_tags);
+        cx.extensions_mut().extend(self.extensions.0);
         cx.rpc_info.config_mut().unwrap().merge(self.config);
         Ok(())
     }

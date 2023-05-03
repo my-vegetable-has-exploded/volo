@@ -34,7 +34,7 @@
 //! ```
 
 use metainfo::TypeMap;
-use volo::net::Address;
+use volo::{context::Extensions, loadbalance::RequestCode, net::Address};
 
 use crate::context::Config;
 
@@ -49,11 +49,18 @@ pub struct CallOpt {
     pub config: Config,
     /// Sets the caller tags for the call.
     pub caller_tags: TypeMap,
+    /// User-defined informations
+    pub extensions: Extensions,
 }
 
 impl CallOpt {
     /// Creates a new [`CallOpt`].
     pub fn new() -> Self {
         Default::default()
+    }
+
+    pub fn set_request_code(&mut self, code: u64) -> &mut Self {
+        self.extensions.insert(RequestCode(code));
+        self
     }
 }
