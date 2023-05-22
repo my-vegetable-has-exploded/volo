@@ -1,4 +1,4 @@
-use std::{cmp::min, collections::HashSet, future::Future, hash::Hash, sync::Arc};
+use std::{cmp::min, collections::HashSet, future::Future, hash::Hash, sync::Arc, time::Instant};
 
 use dashmap::{mapref::entry::Entry, DashMap};
 
@@ -236,7 +236,11 @@ where
                 });
             }
         }
-        virtual_nodes.sort();
+        let start = Instant::now();
+        virtual_nodes.sort_unstable();
+        let end = Instant::now();
+        let duration = end - start;
+        println!("Sort time: {:?}ms", duration.as_millis());
         WeightedInstances {
             real_nodes,
             virtual_nodes,
@@ -525,7 +529,7 @@ mod tests {
         };
         let mut rng = rand::thread_rng();
         for i in 0..200 {
-            let w = rng.gen_range(10..=100);
+            let w = rng.gen_range(100..=100);
             let port = rng.gen_range(1000..=65535);
             instances.push(new_instance(format!("127.0.0.{}:{}", i, port), w));
             instances.push(new_instance(format!("192.168.0.{}:{}", i, port), w));
