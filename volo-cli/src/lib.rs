@@ -28,6 +28,7 @@ macro_rules! templates_to_target_file {
         let folder = $folder;
         let file_path = folder.join($target_file_name);
         if !file_path.exists() {
+			//Note@wy replace args here
             let content = format!(include_str!($template_file_name), $($args)*);
             let mut file = std::fs::File::create(file_path)?;
             std::io::Write::write_all(&mut file, content.as_bytes())?;

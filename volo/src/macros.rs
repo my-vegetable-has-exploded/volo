@@ -20,6 +20,7 @@ macro_rules! volo_unreachable {
 #[macro_export]
 macro_rules! include_service {
     ($service: tt) => {
+		//Note@wy include! will include the file and execute it(expand macro)
         include!(concat!(env!("OUT_DIR"), concat!("/", $service)));
     };
 }

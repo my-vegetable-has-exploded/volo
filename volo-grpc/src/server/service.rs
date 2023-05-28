@@ -117,6 +117,7 @@ impl<S, T, U> CodecService<S, T, U> {
     }
 }
 
+// Note@wy layer for encoder & decoder
 impl<S, T, U> Service<ServerContext, Request<hyper::Body>> for CodecService<S, T, U>
 where
     S: Service<ServerContext, Request<T>, Response = Response<U>> + Clone + Send + Sync + 'static,

@@ -35,6 +35,7 @@ pub trait NamedService {
 pub struct Server<L> {
     layer: L,
     http2_config: Http2Config,
+    // Note@wy router for multiservice.
     router: Router,
 }
 
@@ -213,6 +214,7 @@ impl<L> Server<L> {
         }
     }
 
+    // Note@wy
     /// The main entry point for the server.
     /// Runs server with a stop signal to control graceful shutdown.
     pub async fn run_with_shutdown<
@@ -235,6 +237,7 @@ impl<L> Server<L> {
         let mut incoming = incoming.make_incoming().await?;
         tracing::info!("[VOLO] server start at: {:?}", incoming);
 
+        // Note@wy init router as as a layer for this server
         let service = motore::builder::ServiceBuilder::new()
             .layer(self.layer)
             .service(self.router);
@@ -279,6 +282,7 @@ impl<L> Server<L> {
 
                     let mut watch = rx.clone();
                     spawn(async move {
+                        //Note@wy ??? how to
                         let mut http_conn = server.serve_connection(conn, service);
                         tokio::select! {
                             _ = watch.changed() => {

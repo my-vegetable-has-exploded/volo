@@ -78,6 +78,7 @@ where
 
     type Future<'cx> = impl Future<Output = Result<Self::Response, Self::Error>> + 'cx;
 
+	//Note@wy from volo-grpc/src/client/mod.rs#L555 to
     fn call<'cx, 's>(
         &'s self,
         cx: &'cx mut ClientContext,

@@ -88,6 +88,7 @@ pub struct WeightedRandomBalance<K>
 where
     K: Hash + PartialEq + Eq + Send + Sync + 'static,
 {
+	//Note@wy map for each endpoint(methods of service?)
     router: DashMap<K, Arc<WeightedInstances>>,
 }
 

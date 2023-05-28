@@ -40,6 +40,7 @@ pub struct Add {
         help = "Specify the output filename, defaults to 'volo_gen.rs'.",
         default_value = "volo_gen.rs"
     )]
+    //Note@wy default outdir value is "volo_gen"
     pub filename: String,
 
     #[arg(

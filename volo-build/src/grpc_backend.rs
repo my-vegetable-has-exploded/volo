@@ -165,6 +165,7 @@ impl VoloGrpcBackend {
 
     fn build_server_call(&self, method: &Method) -> FastStr {
         let method_name = self.cx().rust_name(method.def_id);
+        // Note@wy codegen method call
         format!("let resp = inner.{method_name}(req).await;").into()
     }
 
@@ -188,6 +189,7 @@ impl VoloGrpcBackend {
 }
 
 impl CodegenBackend for VoloGrpcBackend {
+	//Note@wy build with def_id from pilota
     fn codegen_service_impl(&self, def_id: DefId, stream: &mut String, s: &rir::Service) {
         let service_name = self.cx().rust_name(def_id);
         let server_name = format!("{}Server", service_name);
@@ -212,6 +214,7 @@ impl CodegenBackend for VoloGrpcBackend {
             .map(|method| format!("/{package}.{}/{}", s.name, method.name))
             .collect::<Vec<_>>();
 
+		//Note@wy method router
         let req_matches = s
             .methods
             .iter()
@@ -315,6 +318,7 @@ impl CodegenBackend for VoloGrpcBackend {
                         requests: {req_ty},
                     ) -> {resp_ty} {{
                         let req = {req}.map(|message| {req_enum_name_send}::{variant_name}(::std::boxed::Box::pin(message) as _));
+						//Note@wy make context and call one shot service
                         let mut cx = self.0.make_cx("{path}");
 
                         let resp = ::volo::client::OneShotService::call(self.0, &mut cx, req).await?;
@@ -527,6 +531,7 @@ impl CodegenBackend for VoloGrpcBackend {
         });
     }
 
+	//Note@wy implements the trait pilota::CodegenBackend
     fn codegen_service_method(&self, _service_def_id: DefId, method: &rir::Method) -> String {
         let client_streaming = self
             .cx()

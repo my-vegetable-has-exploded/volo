@@ -3,6 +3,8 @@ use hyper::Body;
 
 use crate::codec::{compression::CompressionEncoding, decode::Kind};
 
+//Note@wy encode for http & decode from http
+
 pub trait SendEntryMessage {
     fn into_body(
         self,

@@ -1,3 +1,4 @@
+//Note@wy build.rs will be executed when run cargo build
 fn main() {
     volo_build::ConfigBuilder::default().write().unwrap();
 }

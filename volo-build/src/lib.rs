@@ -137,6 +137,7 @@ where
             return Ok(());
         }
 
+		//Note@wy use polita to compile idl and output to out_dir(default: volo_gen.rs)
         self.pilota_builder.compile_with_config(
             self.idls
                 .into_iter()

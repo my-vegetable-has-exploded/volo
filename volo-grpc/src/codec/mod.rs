@@ -69,6 +69,7 @@ impl<T: Message + Default> Decoder for DefaultDecoder<T> {
     type Item = T;
     type Error = Status;
 
+	//Note@wy will call merge_fields to encoder
     fn decode(&mut self, src: &mut BytesMut) -> Result<Option<Self::Item>, Self::Error> {
         Message::decode(src)
             .map(Some)

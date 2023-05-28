@@ -78,6 +78,7 @@ impl<C, T, U>
 }
 
 impl<IL, OL, C, LB, T, U, DISC> ClientBuilder<IL, OL, C, LbConfig<LB, DISC>, T, U> {
+	//Note@wy where to specify the load balance
     pub fn load_balance<NLB>(
         self,
         load_balance: NLB,
@@ -457,6 +458,7 @@ struct ClientInner {
 
 /// A client for a gRPC service.
 ///
+/// Note@wy why it's cheap to clone a `Client`?
 /// `Client` is designed to "clone and use", so it's cheap to clone it.
 /// One important thing is that the `CallOpt` will not be cloned, because
 /// it's designed to be per-request.
