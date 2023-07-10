@@ -16,7 +16,7 @@
 //! only be used between [`Volo`][Volo] and [`Kitex`][Kitex] services (currently). If you want to
 //! use the standard thrift transport protocol, you can disable [`TTHeader`][TTHeader] and use
 //! [`Framed`][Framed] instead.
-//!
+// Note@wy codec server hierarchy
 //! Currently, the default codec protocol is `TTHeader<Framed<Binary>>`.
 //!
 //! Note: The default implementation of codec assumes that the transport and protocol won't change

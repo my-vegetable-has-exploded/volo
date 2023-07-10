@@ -93,6 +93,7 @@ pub async fn serve<Svc, Req, Resp, E, D, SP>(
                                     ThriftMessage::mk_server_resp(&cx, resp.map_err(|e| e.into()))
                                         .unwrap();
                                 if let Err(e) = async {
+									//Note@wy encoder will write&flush
                                     let result = encoder.encode(&mut cx, msg).await;
                                     span_provider.leave_encode(&cx);
                                     result

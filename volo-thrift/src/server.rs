@@ -348,6 +348,7 @@ impl<S, L, Req, MkC, SP> Server<S, L, Req, MkC, SP> {
     }
 }
 
+//Note@wy handler for thrift pingpong server
 #[allow(clippy::too_many_arguments)]
 async fn handle_conn<R, W, Req, Svc, Resp, MkC, SP>(
     rh: R,

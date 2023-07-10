@@ -126,6 +126,7 @@ where
         );
         match &self.data {
             Ok(v) => {
+                // Note@wy thrift write metainfo
                 protocol.write_message_begin(&ident)?;
                 v.encode(protocol)?;
             }

@@ -7,6 +7,8 @@ pub mod default;
 
 pub use default::DefaultMakeCodec;
 
+//Note@wy thrift decoder->ReadHalf, encoder->WriteHalf
+
 /// [`Decoder`] reads from an [`AsyncRead`] and decodes the data into a [`ThriftMessage`].
 ///
 /// Returning an Ok(None) indicates the EOF has been reached.
