@@ -41,6 +41,7 @@ pub async fn serve<Svc, Req, Resp, E, D>(
     let (send_tx, mut send_rx) = mpsc::channel(CHANNEL_SIZE);
     let (error_send_tx, mut error_send_rx) = mpsc::channel(1);
 
+    // Note@wy server loop recv & send.
     tokio::spawn({
         let peer_addr = peer_addr.clone();
         async move {

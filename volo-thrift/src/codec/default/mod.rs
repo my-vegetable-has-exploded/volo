@@ -149,6 +149,7 @@ impl<E: ZeroCopyEncoder, W: AsyncWrite + Unpin + Send + Sync + 'static> Encoder
             cx.stats_mut().record_write_start_at(); // encode end is also write start
 
             self.linked_bytes
+                // Note@wy use write io here
                 .write_all_vectored(&mut self.writer)
                 .await
                 .map_err(TransportError::from)?;

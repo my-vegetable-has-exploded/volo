@@ -190,6 +190,7 @@ impl<S, L, Req, MkC, SP> Server<S, L, Req, MkC, SP> {
                 if *exit_flag.read() {
                     break Ok(());
                 }
+				//Note@wy multiplex powered by socket select?
                 match incoming.accept().await {
                     Ok(Some(conn)) => {
                         let peer_addr = conn.info.peer_addr;

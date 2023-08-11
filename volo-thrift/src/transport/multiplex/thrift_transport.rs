@@ -122,6 +122,7 @@ where
                             RpcInfo::with_role(Role::Client),
                             pilota::thrift::TMessageType::Call,
                         );
+						//Note@wy streaming poll result.
                         let res = read_half.try_next::<Resp>(&mut cx, target.clone()).await;
                         if let Err(e) = res {
                             tracing::error!(
@@ -281,6 +282,7 @@ where
         cx: &mut ClientContext,
         target: Address,
     ) -> Result<Option<ThriftMessage<T>>, Error> {
+        // Note@wy poll one msg from decoder
         let thrift_msg = self.decoder.decode(cx).await.map_err(|e| {
             tracing::error!(
                 "[VOLO] transport[{}] decode error: {}, target: {}",

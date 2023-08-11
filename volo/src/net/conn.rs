@@ -118,7 +118,7 @@ impl ConnStream {
     #[allow(clippy::type_complexity)]
     pub fn into_split(self) -> (OwnedReadHalf, OwnedWriteHalf) {
         match self {
-			//Note@wy 
+			//Note@wy tcp split readhalf&writehalf
             Self::Tcp(stream) => {
                 let (rh, wh) = stream.into_split();
                 (OwnedReadHalf::Tcp(rh), OwnedWriteHalf::Tcp(wh))
